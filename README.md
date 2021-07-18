@@ -2,7 +2,7 @@
 jonson-reflect allows you to easily parse objects into JSON and vice-versa. It uses JSONType from [jonson](https://github.com/codeRiftel/jonson) as a JSON type representation.
 
 ## Alternative
-If for some reason reflection isn't an option for you and you're still short on time to handle all this verbosity, then check out [meta-vjp](https://github.com/codeRiftel/meta-vjp) which will generate C# code for you.
+If for some reason reflection isn't an option for you and you're still short on time to handle all this verbosity, then check out [meta-jonson](https://github.com/codeRiftel/meta-jonson) which will generate C# code for you.
 
 ## Considerations
 * uses reflection
