@@ -5,7 +5,7 @@ using System.Globalization;
 using System.Collections.Generic;
 using option;
 
-namespace vjp.reflect {
+namespace jonson.reflect {
     public static class Reflect {
         public static JSONType ToJSON<T>(T obj, bool ignoreNulls) {
             Option<JSONType> res = ObjToJSON(obj, ignoreNulls);

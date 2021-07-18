@@ -1,5 +1,5 @@
-# vjp-reflect
-vjp-reflect allows you to easily parse objects into JSON and vice-versa. It uses JSONType from [vjp](https://github.com/codeRiftel/vjp) as a JSON type representation.
+# jonson-reflect
+jonson-reflect allows you to easily parse objects into JSON and vice-versa. It uses JSONType from [jonson](https://github.com/codeRiftel/jonson) as a JSON type representation.
 
 ## Alternative
 If for some reason reflection isn't an option for you and you're still short on time to handle all this verbosity, then check out [meta-vjp](https://github.com/codeRiftel/meta-vjp) which will generate C# code for you.
@@ -37,7 +37,7 @@ public struct Person {
 }
 
 Person person = new Person();
-Result<JSONType, JSONErr> personRes = VJP.Parse(input, 1024);
+Result<JSONType, JSONErr> personRes = Jonson.Parse(input, 1024);
 if (personRes.IsErr()) {
     return;
 }
@@ -47,6 +47,5 @@ person = Reflect.FromJSON(person, personRes.AsOk());
 Let's generate JSON from instance.
 ```csharp
 JSONType personType = Reflect.ToJSON(person);
-string output = VJP.Generate(personType);
+string output = Jonson.Generate(personType);
 ```
-Less verbose, isn't it?

@@ -1,7 +1,7 @@
 using System;
 using option;
-using vjp;
-using vjp.reflect;
+using jonson;
+using jonson.reflect;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -89,61 +89,61 @@ class Init {
         for (int i = 0; i < tests.Count; i++) {
             object test = tests[i];
             JSONType jsonType = Reflect.ToJSON(test, true);
-            Console.WriteLine(VJP.Generate(jsonType));
+            Console.WriteLine(Jonson.Generate(jsonType));
         }
     }
 
     private static void FillTest() {
         Dictionary<string, int> dictInt = new Dictionary<string, int>();
-        Result<JSONType, JSONError> jsonRes = VJP.Parse("{\"1\": 1, \"2\": 2}", 1024);
+        Result<JSONType, JSONError> jsonRes = Jonson.Parse("{\"1\": 1, \"2\": 2}", 1024);
         if (jsonRes.IsOk()) {
             dictInt = Reflect.FromJSON(dictInt, jsonRes.AsOk());
-            Console.WriteLine(VJP.Generate(Reflect.ToJSON(dictInt, false)));
+            Console.WriteLine(Jonson.Generate(Reflect.ToJSON(dictInt, false)));
         }
 
         Dictionary<string, string> dictStr = new Dictionary<string, string>();
-        jsonRes = VJP.Parse("{\"1\": \"1\", \"2\": \"2\"}", 1024);
+        jsonRes = Jonson.Parse("{\"1\": \"1\", \"2\": \"2\"}", 1024);
         if (jsonRes.IsOk()) {
             dictStr = Reflect.FromJSON(dictStr, jsonRes.AsOk());
-            Console.WriteLine(VJP.Generate(Reflect.ToJSON(dictStr, false)));
+            Console.WriteLine(Jonson.Generate(Reflect.ToJSON(dictStr, false)));
         }
 
         string[] strArr = new string[] { };
-        jsonRes = VJP.Parse("[\"hello\",\",\",\"world\"]", 1024);
+        jsonRes = Jonson.Parse("[\"hello\",\",\",\"world\"]", 1024);
         if (jsonRes.IsOk()) {
             strArr = Reflect.FromJSON(strArr, jsonRes.AsOk());
-            Console.WriteLine(VJP.Generate(Reflect.ToJSON(strArr, false)));
+            Console.WriteLine(Jonson.Generate(Reflect.ToJSON(strArr, false)));
         }
 
         List<string> strList = new List<string>();
-        jsonRes = VJP.Parse("[\"hello\",\",\",\"world\"]", 1024);
+        jsonRes = Jonson.Parse("[\"hello\",\",\",\"world\"]", 1024);
         if (jsonRes.IsOk()) {
             strList = Reflect.FromJSON(strList, jsonRes.AsOk());
-            Console.WriteLine(VJP.Generate(Reflect.ToJSON(strList, false)));
+            Console.WriteLine(Jonson.Generate(Reflect.ToJSON(strList, false)));
         }
 
         FieldBoolTest[] fieldBoolArr = new FieldBoolTest[] { };
-        jsonRes = VJP.Parse("[{\"b\": true}, {\"b\": false}]", 1024);
+        jsonRes = Jonson.Parse("[{\"b\": true}, {\"b\": false}]", 1024);
         if (jsonRes.IsOk()) {
             fieldBoolArr = Reflect.FromJSON(fieldBoolArr, jsonRes.AsOk());
-            Console.WriteLine(VJP.Generate(Reflect.ToJSON(fieldBoolArr, false)));
+            Console.WriteLine(Jonson.Generate(Reflect.ToJSON(fieldBoolArr, false)));
         }
 
         Dictionary<string, List<float>> compound = new Dictionary<string, List<float>>();
-        jsonRes = VJP.Parse("{\"first\": [-42.42, 10.2], \"second\": [-10.2, 42.42]}", 1024);
+        jsonRes = Jonson.Parse("{\"first\": [-42.42, 10.2], \"second\": [-10.2, 42.42]}", 1024);
         if (jsonRes.IsOk()) {
             compound = Reflect.FromJSON(compound, jsonRes.AsOk());
-            Console.WriteLine(VJP.Generate(Reflect.ToJSON(compound, false)));
+            Console.WriteLine(Jonson.Generate(Reflect.ToJSON(compound, false)));
         }
 
         List<God> enumList = new List<God>();
-        jsonRes = VJP.Parse("[3, 2, 1]", 1024);
+        jsonRes = Jonson.Parse("[3, 2, 1]", 1024);
         if (jsonRes.IsOk()) {
             enumList = Reflect.FromJSON(enumList, jsonRes.AsOk());
             Console.WriteLine(enumList[0] == God.Artemis);
             Console.WriteLine(enumList[1] == God.Athena);
             Console.WriteLine(enumList[2] == God.Zeus);
-            Console.WriteLine(VJP.Generate(Reflect.ToJSON(enumList, false)));
+            Console.WriteLine(Jonson.Generate(Reflect.ToJSON(enumList, false)));
         }
     }
 
