@@ -1,0 +1,11 @@
+{
+    "name": "coderiftel.jonson-reflect.runtime",
+    "references": [
+        "coderiftel.option.runtime",
+        "coderiftel.jonson.runtime"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "autoReferenced": true,
+    "noEngineReferences": true
+}

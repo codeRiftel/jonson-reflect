@@ -1,0 +1,13 @@
+{
+    "name": "xyz.coderiftel.jonson-reflect",
+    "version": "1.0.0",
+    "description": "jonson-reflect uses reflection to make jonson less verbose.",
+    "displayName": "jonson-reflect",
+    "author": {"name": "coderiftel"},
+    "hideInEditor": false,
+    "keywords": ["serialization", "parser", "json", "reflection", "generator", "simple", "unity", "jonson"],
+    "dependencies": {
+        "xyz.coderiftel.option": "1.0.0",
+        "xyz.coderiftel.jonson": "1.0.0"
+    }
+}
