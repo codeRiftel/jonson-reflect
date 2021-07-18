@@ -21,12 +21,8 @@ namespace jonson.reflect {
         }
 
         private static object JSONToObj(object obj, JSONType json) {
-            Type objType = obj.GetType();
-
             if (json.Str.IsSome()) {
-                if (obj is string) {
-                    obj = json.Str.Peel();
-                }
+                obj = json.Str.Peel();
             } else if (json.Num.IsSome()) {
                 string numStr = json.Num.Peel();
                 NumberStyles style = NumberStyles.AllowLeadingSign;
@@ -96,6 +92,10 @@ namespace jonson.reflect {
                     obj = json.Bool.Peel();
                 }
             } else if (json.Obj.IsSome()) {
+                if (obj == null) {
+                    return null;
+                }
+                Type objType = obj.GetType();
                 Dictionary<string, JSONType> jsonDict = json.Obj.Peel();
                 if (obj is IDictionary && objType.IsGenericType) {
                     Type[] args = objType.GetGenericArguments();
@@ -125,6 +125,10 @@ namespace jonson.reflect {
                     }
                 }
             } else if (json.Arr.IsSome()) {
+                if (obj == null) {
+                    return null;
+                }
+                Type objType = obj.GetType();
                 List<JSONType> jsonArr = json.Arr.Peel();
                 if (obj is IList) {
                     if (objType.IsArray || objType.IsGenericType) {
