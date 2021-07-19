@@ -17,10 +17,10 @@ namespace jonson.reflect {
         }
 
         public static T FromJSON<T>(T obj, JSONType json) {
-            return (T)JSONToObj(obj, json);
+            return (T)JSONToObj<T>(obj, json);
         }
 
-        private static object JSONToObj(object obj, JSONType json) {
+        private static object JSONToObj<T>(object obj, JSONType json) {
             if (json.Str.IsSome()) {
                 obj = json.Str.Peel();
             } else if (json.Num.IsSome()) {
@@ -30,7 +30,7 @@ namespace jonson.reflect {
                 style |= NumberStyles.AllowExponent;
 
                 if (obj.GetType().IsEnum) {
-                    obj = JSONToObj((int)obj, json);
+                    obj = JSONToObj<int>((int)obj, json);
                 } else if (obj is byte) {
                     byte num;
                     if (byte.TryParse(numStr, style, CultureInfo.InvariantCulture, out num)) {
@@ -93,7 +93,7 @@ namespace jonson.reflect {
                 }
             } else if (json.Obj.IsSome()) {
                 if (obj == null) {
-                    return null;
+                    obj = Activator.CreateInstance(typeof(T));
                 }
                 Type objType = obj.GetType();
                 Dictionary<string, JSONType> jsonDict = json.Obj.Peel();
@@ -108,7 +108,9 @@ namespace jonson.reflect {
                         }
                         IDictionary dict = (IDictionary)obj;
                         foreach (string key in jsonDict.Keys) {
-                            dict[key] = JSONToObj(value, jsonDict[key]);
+                            MethodInfo method = typeof(Reflect).GetMethod("FromJSON");
+                            MethodInfo generic = method.MakeGenericMethod(args[1]);
+                            dict[key] = generic.Invoke(null, new object[] {value, jsonDict[key]});
                         }
                     }
                 } else {
@@ -119,14 +121,23 @@ namespace jonson.reflect {
                         FieldInfo field = fields[i];
                         if (jsonDict.ContainsKey(field.Name)) {
                             object fieldValue = field.GetValue(obj);
-                            fieldValue = JSONToObj(fieldValue, jsonDict[field.Name]);
+                            MethodInfo method = typeof(Reflect).GetMethod("FromJSON");
+                            MethodInfo generic = method.MakeGenericMethod(field.FieldType);
+                            JSONType jsonFieldVal = jsonDict[field.Name];
+                            fieldValue = generic.Invoke(
+                                null,
+                                new object[] {
+                                    fieldValue,
+                                    jsonFieldVal
+                                }
+                            );
                             field.SetValue(obj, fieldValue);
                         }
                     }
                 }
             } else if (json.Arr.IsSome()) {
                 if (obj == null) {
-                    return null;
+                    obj = Activator.CreateInstance(typeof(T));
                 }
                 Type objType = obj.GetType();
                 List<JSONType> jsonArr = json.Arr.Peel();
@@ -153,7 +164,11 @@ namespace jonson.reflect {
                             } else {
                                 value = Activator.CreateInstance(elementType);
                             }
-                            value = JSONToObj(value, jsonArr[i]);
+
+                            MethodInfo method = typeof(Reflect).GetMethod("FromJSON");
+                            MethodInfo generic = method.MakeGenericMethod(elementType);
+                            value = generic.Invoke(null, new object[] { value, jsonArr[i] });
+
                             if (isArray) {
                                 list[i] = value;
                             } else {
